@@ -1,7 +1,0 @@
-
-get http://localhost:3000/search-blog
-Content-Type: application/json
-
-{
-    "tag":"beautiful"
-}

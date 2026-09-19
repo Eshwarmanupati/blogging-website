@@ -21,7 +21,7 @@ const MinimalBlogPost = ({ blog, index }) => {
         <div className="flex gap-2 items-center mb-7">
           <img src={profile_img} className="w-6 h-6 rounded-full" />
           <p className="line-clamp-1">
-            {fullname} @{username}
+            <span className="capitalize">{fullname}</span> @{username}
           </p>
           <p className="min-w-fit">{getDay(publishedAt)}</p>
         </div>

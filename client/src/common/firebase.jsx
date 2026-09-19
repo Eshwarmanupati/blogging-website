@@ -1,38 +1,33 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+/*
+    Firebase web config is not secret — it ships in the bundle either way — but it
+    is read from env vars so the same code can point at a different project
+    without a rebuild, and so the repo carries no project-specific values.
+*/
 const firebaseConfig = {
-  apiKey: "AIzaSyA0OTlyS5B0utEHX23Oq1lANXfm6Xo-6Lc",
-  authDomain: "blog-website-992fe.firebaseapp.com",
-  projectId: "blog-website-992fe",
-  storageBucket: "blog-website-992fe.firebasestorage.app",
-  messagingSenderId: "551861726362",
-  appId: "1:551861726362:web:1ff92de6693df6542d0323",
-  measurementId: "G-CW7RSB6G4N"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+export const isGoogleAuthConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const app = isGoogleAuthConfigured ? initializeApp(firebaseConfig) : null;
 
+const provider = new GoogleAuthProvider();
 
-// google auth
-
-const provider = new GoogleAuthProvider()
-
-const auth = getAuth();
-
+/* Resolves to the Firebase ID token, which the server verifies with the admin SDK. */
 export const authWithGoogle = async () => {
-    let user = null;
+    if (!isGoogleAuthConfigured) {
+        throw new Error("Google sign-in is not configured");
+    }
 
-    await signInWithPopup(auth,provider)
-    .then((result) => {
-        user = result.user;
-    })
-    .catch((err) => {
-        console.log(err)
-    })
+    const result = await signInWithPopup(getAuth(app), provider);
 
-    return user;
-}
+    return result.user.getIdToken();
+};

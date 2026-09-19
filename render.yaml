@@ -1,0 +1,29 @@
+# Render blueprint for the API. Import this from the Render dashboard, or create
+# the service manually with the settings below.
+services:
+  - type: web
+    name: blogging-website-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      # Set these in the Render dashboard — never commit their values.
+      - key: DB_LOCATION
+        sync: false
+      - key: SECRET_ACCESS_KEY
+        generateValue: true
+      - key: CLIENT_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_BASE64
+        sync: false

@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Gelasio&family=Inter:wght@400;500&display=swap');
-@import "@flaticon/flaticon-uicons/css/all/all";
+/*
+    Only the icon families this app actually uses. Importing all/all pulls in
+    every weight and both shapes, which alone was ~1MB of CSS and fonts.
+      fi-rr-*     regular rounded      fi-br-*  bold rounded
+      fi-rs-*     regular straight     fi-sr-*  solid rounded
+      fi-brands-* brand marks
+*/
+@import "@flaticon/flaticon-uicons/css/regular/rounded";
+@import "@flaticon/flaticon-uicons/css/regular/straight";
+@import "@flaticon/flaticon-uicons/css/bold/rounded";
+@import "@flaticon/flaticon-uicons/css/solid/rounded";
+@import "@flaticon/flaticon-uicons/css/brands/all";
 
 @tailwind base;
 @tailwind components;
